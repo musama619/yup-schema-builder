@@ -426,6 +426,9 @@ const YupSchemaGenerator = () => {
     schemaCode += '});\n\nexport default validationSchema;';
 
     setGeneratedSchema(schemaCode);
+
+    toast('Build Successful!', {
+    });
   };
 
   console.log(generatedSchema);
@@ -434,7 +437,7 @@ const YupSchemaGenerator = () => {
     switch (field.type) {
       case 'string':
         return (
-          <div className='grid grid-cols-3 gap-4'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-4'>
             <div>
               <Label>Min Length</Label>
               <Input
@@ -442,7 +445,7 @@ const YupSchemaGenerator = () => {
                 value={field.minLength}
                 onChange={(e) => updateField(index, { minLength: e.target.value })}
                 placeholder='Minimum length'
-                className='mt-2'
+                className='mt-3'
               />
             </div>
             <div>
@@ -452,14 +455,14 @@ const YupSchemaGenerator = () => {
                 value={field.maxLength}
                 onChange={(e) => updateField(index, { maxLength: e.target.value })}
                 placeholder='Maximum length'
-                className='mt-2'
+                className='mt-3'
               />
             </div>
           </div>
         );
       case 'number':
         return (
-          <div className='grid grid-cols-3 gap-4'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-4'>
             <div>
               <Label>Min Value</Label>
               <Input
@@ -494,7 +497,7 @@ const YupSchemaGenerator = () => {
   const renderArrayTypeInputs = (field: Field, index: number) => {
     return (
       <div className='space-y-3'>
-        <div className='grid grid-cols-3 gap-4'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-4'>
           <div>
             <Label className='mb-2'>Array Element Type</Label>
             <Select
@@ -573,7 +576,7 @@ const YupSchemaGenerator = () => {
         {field.objectFields.map((objField, objIndex) => (
           <div
             key={objIndex}
-            className='border p-2 rounded mb-2 grid grid-cols-3 gap-2 items-center'
+            className='border p-2 rounded mb-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 items-center'
           >
             <Input
               placeholder='Field Name'
@@ -605,12 +608,13 @@ const YupSchemaGenerator = () => {
 
             <div className='flex items-center'>
               <Checkbox
+                id={`check-isrequired-${index}-${objIndex}`}
                 checked={objField.required}
                 onCheckedChange={(checked) =>
                   updateObjectField(index, objIndex, { required: checked })
                 }
               />
-              <Label className='ml-2'>Required</Label>
+              <Label htmlFor={`check-isrequired-${index}-${objIndex}`} className='ml-2'>Required</Label>
 
               <Button
                 variant='destructive'
@@ -632,8 +636,9 @@ const YupSchemaGenerator = () => {
 
     return (
       <div className='border p-3 rounded-lg mt-3'>
-        <div className='flex items-center mb-3'>
+        <div className='flex items-center'>
           <Checkbox
+            id={`check-conditional-validation-${index}`}
             checked={conditionalValidation.enabled}
             onCheckedChange={(checked) =>
               updateField(index, {
@@ -641,12 +646,14 @@ const YupSchemaGenerator = () => {
               })
             }
           />
-          <Label className='ml-2 font-semibold'>Use Conditional Validation</Label>
+          <Label htmlFor={`check-conditional-validation-${index}`} className='ml-2 font-semibold'>
+            Use Conditional Validation
+          </Label>
         </div>
 
         {conditionalValidation.enabled && (
-          <div className='space-y-3'>
-            <div className='grid grid-cols-3 gap-4'>
+          <div className='space-y-3 mt-5'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-4'>
               <div>
                 <Label>Depends On Field</Label>
                 <Select
@@ -657,7 +664,7 @@ const YupSchemaGenerator = () => {
                     })
                   }
                 >
-                  <SelectTrigger className='w-full mt-2'>
+                  <SelectTrigger className='w-full mt-3'>
                     <SelectValue placeholder='Select field' />
                   </SelectTrigger>
                   <SelectContent>
@@ -685,7 +692,7 @@ const YupSchemaGenerator = () => {
                     })
                   }
                 >
-                  <SelectTrigger className='w-full mt-2'>
+                  <SelectTrigger className='w-full mt-3'>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -719,7 +726,7 @@ const YupSchemaGenerator = () => {
                         : 'text'
                     }
                     placeholder='Comparison value'
-                    className='mt-2'
+                    className='mt-3'
                   />
                 </div>
               )}
@@ -728,7 +735,7 @@ const YupSchemaGenerator = () => {
             <div className='grid grid-cols-2 gap-4 mt-3'>
               <div className='border p-2 rounded-lg'>
                 <Label className='font-semibold'>Then</Label>
-                <div className='flex items-center mt-2'>
+                <div className='flex items-center mt-3'>
                   <Checkbox
                     checked={conditionalValidation.then.required}
                     onCheckedChange={(checked) =>
@@ -743,7 +750,7 @@ const YupSchemaGenerator = () => {
 
               <div className='border p-2 rounded-lg'>
                 <Label className='font-semibold'>Otherwise</Label>
-                <div className='flex items-center mt-2'>
+                <div className='flex items-center mt-3'>
                   <Checkbox
                     checked={conditionalValidation.otherwise.required}
                     onCheckedChange={(checked) =>
@@ -774,7 +781,7 @@ const YupSchemaGenerator = () => {
               onClick={generateSchema}
               size='sm'
               variant='default'
-              className='bg-pink-600 hover:bg-pink-500'
+              className='bg-pink-700 hover:bg-pink-500 text-white'
             >
               <Hammer /> Build Schema
             </Button>
@@ -786,7 +793,7 @@ const YupSchemaGenerator = () => {
             <div className='space-y-4'>
               {fields.map((field, index) => (
                 <div key={index} className='border p-4 rounded-lg space-y-3'>
-                  <div className='grid grid-cols-3 gap-4'>
+                  <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-4'>
                     {/* Field Name */}
                     <div>
                       <Label>Field Name</Label>
@@ -794,13 +801,13 @@ const YupSchemaGenerator = () => {
                         value={field.name}
                         onChange={(e) => updateField(index, { name: e.target.value })}
                         placeholder='Enter field name'
-                        className='mt-2'
+                        className='mt-3'
                       />
                     </div>
 
                     {/* Field Type */}
                     <div>
-                      <Label className='mb-2'>Field Type</Label>
+                      <Label className='mb-3'>Field Type</Label>
                       <div className='w-full'>
                         <Select
                           value={field.type}
@@ -825,16 +832,18 @@ const YupSchemaGenerator = () => {
                     {/* Validation Flags */}
                     <div className='flex items-center space-x-3 pt-6'>
                       <Checkbox
+                        id={`check-isrequired-${index}`}
                         checked={field.required}
                         onCheckedChange={(checked) => updateField(index, { required: checked })}
                       />
-                      <Label>Required</Label>
+                      <Label htmlFor={`check-isrequired-${index}`}>Required</Label>
 
                       <Checkbox
+                        id={`check-isnullable-${index}`}
                         checked={field.nullable}
                         onCheckedChange={(checked) => updateField(index, { nullable: checked })}
                       />
-                      <Label>Nullable</Label>
+                      <Label htmlFor={`check-isnullable-${index}`}>Nullable</Label>
                     </div>
                   </div>
 
@@ -850,7 +859,7 @@ const YupSchemaGenerator = () => {
                       value={field.customMessage}
                       onChange={(e) => updateField(index, { customMessage: e.target.value })}
                       placeholder='Optional custom error message'
-                      className='mt-2'
+                      className='mt-3'
                     />
                   </div>
 
@@ -868,7 +877,7 @@ const YupSchemaGenerator = () => {
           </div>
 
           {/* Generate Schema */}
-          <div className='lg:w-1/2 w-full overflow-y-auto pl-2'>
+          <div className='lg:w-1/2 w-full overflow-y-auto'>
             <div className='relative'>
               <Button
                 onClick={() => {
@@ -877,7 +886,7 @@ const YupSchemaGenerator = () => {
                     description: 'Schema copied to clipboard.',
                   });
                 }}
-                className='absolute top-2 right-2 z-10'
+                className='absolute top-2 right-2 z-0'
                 size='sm'
                 variant='outline'
               >
